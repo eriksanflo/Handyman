@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Commands\Product\" />
+    <Folder Include="EventHandler\Product\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Handyman.Common\Handyman.Common.csproj" />
+    <ProjectReference Include="..\Handyman.Persistence\Handyman.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>
