@@ -11,10 +11,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.9" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Handyman.Domain\Handyman.Domain.csproj" />
+    <ProjectReference Include="..\Handyman.Service.Handler\Handyman.Service.Handler.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,17 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\Product\" />
-    <Folder Include="EventHandler\Product\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MediatR" Version="9.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.9" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Handyman.Common\Handyman.Common.csproj" />
-    <ProjectReference Include="..\Handyman.Persistence\Handyman.Persistence.csproj" />
+    <ProjectReference Include="..\Handyman.Domain\Handyman.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,11 @@
 ﻿using Handyman.Domain.Models;
+using Handyman.Service.Handler.ContextInterface;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Handyman.Persistence
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -46,15 +48,6 @@ namespace Handyman.Persistence
         public virtual DbSet<VentaEstatus> VentaEstatus { get; set; }
         public virtual DbSet<VentaEvaluacion> VentaEvaluacion { get; set; }
         public virtual DbSet<VentaRole> VentaRole { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                // jalar el valor del config
-                optionsBuilder.UseSqlServer("Data Source=ERIK-PC\\SQLEXPRESS;Initial Catalog=Handyman;Persist Security Info=True;User ID=sa;Password=admin;");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -743,6 +736,9 @@ namespace Handyman.Persistence
             //OnModelCreatingPartial(modelBuilder);
         }
 
-        //partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+        public async Task<int> SaveChangesAsync()
+        {
+            return await base.SaveChangesAsync();
+        }
     }
 }
