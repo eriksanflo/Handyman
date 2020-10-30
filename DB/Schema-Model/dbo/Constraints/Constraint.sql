@@ -1,18 +1,16 @@
 ﻿ALTER TABLE [dbo].[Accesos] ADD CONSTRAINT [fk_Accesos_Parte_1] FOREIGN KEY ([IdParte]) REFERENCES [dbo].[Parte]([IdParte]) ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE [dbo].[AccesoProvider] ADD CONSTRAINT [fk_AccesoProvider_Accesos_1] FOREIGN KEY ([IdAcceso]) REFERENCES [dbo].[Accesos]([IdAcceso]) ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 ALTER TABLE [dbo].[DireccionPostalParte] ADD CONSTRAINT [fk_DireccionPostalParte_TipoPropositoContacto_1] FOREIGN KEY ([IdTipoPropositoContacto]) REFERENCES [dbo].[TipoPropositoContacto]([IdTipoPropositoContacto]) ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE [dbo].[DireccionPostalParte] ADD CONSTRAINT [fk_DireccionPostalParte_PropositoContacto_1] FOREIGN KEY ([IdPropositoContacto]) REFERENCES [dbo].[PropositoContacto]([IdPropositoContacto]) ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE [dbo].[DireccionPostalParte] ADD CONSTRAINT [fk_DireccionPostalParte_CodigoPostal_1] FOREIGN KEY ([IdCodigoPostal]) REFERENCES [dbo].[CodigoPostal]([IdCodigoPostal]) ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE [dbo].[DireccionPostalParte] ADD CONSTRAINT [fk_DireccionPostalParte_Parte_1] FOREIGN KEY ([IdParte]) REFERENCES [dbo].[Parte]([IdParte]) ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-ALTER TABLE [dbo].[EstatusPago] ADD CONSTRAINT [fk_EstatusPago_TipoEstatusPago_1] FOREIGN KEY ([IdTipoEstatusPago]) REFERENCES [dbo].[TipoEstatusPago]([IdTipoEstatusPago]) ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-ALTER TABLE [dbo].[EstatusVenta] ADD CONSTRAINT [fk_EstatusVenta_TipoEstatusVenta_1] FOREIGN KEY ([IdTipoEstatusVenta]) REFERENCES [dbo].[TipoEstatusVenta]([IdTipoEstatusVenta]) ON UPDATE NO ACTION ON DELETE NO ACTION;
-
 ALTER TABLE [dbo].[Item] ADD CONSTRAINT [fk_Item_TipoItem_1] FOREIGN KEY ([IdTipoItem]) REFERENCES [dbo].[TipoItem]([IdTipoItem]) ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE [dbo].[ItemCotizacion] ADD CONSTRAINT [fk_ItemCotizacion_Item_1] FOREIGN KEY ([IdItem]) REFERENCES [dbo].[Item]([IdItem]) ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE [dbo].[ItemCotizacion] ADD CONSTRAINT [fk_ItemCotizacion_UnidadCotizacion_1] FOREIGN KEY ([IdUnidadCotizacion]) REFERENCES [dbo].[UnidadCotizacion]([IdUnidadCotizacion]) ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE [dbo].[ItemPrecio] ADD CONSTRAINT [fk_ItemPrecio_Item_1] FOREIGN KEY ([IdItem]) REFERENCES [dbo].[Item]([IdItem]) ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE [dbo].[ItemPrecio] ADD CONSTRAINT [fk_ItemPrecio_ItemCotizacion_1] FOREIGN KEY ([IdItemCotizacion]) REFERENCES [dbo].[ItemCotizacion]([IdItemCotizacion]) ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE [dbo].[ItemServicio] ADD CONSTRAINT [fk_ItemServicio_Item_1] FOREIGN KEY ([IdItem]) REFERENCES [dbo].[Item]([IdItem]) ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 ALTER TABLE [dbo].[MedioContactoParte] ADD CONSTRAINT [fk_MedioContactoParte_Parte_1] FOREIGN KEY ([IdParte]) REFERENCES [dbo].[Parte]([IdParte]) ON UPDATE NO ACTION ON DELETE NO ACTION;
@@ -21,7 +19,8 @@ ALTER TABLE [dbo].[MedioContactoParte] ADD CONSTRAINT [fk_MedioContactoParte_Pro
 ALTER TABLE [dbo].[Organizacion] ADD CONSTRAINT [fk_Organizacion_Parte_1] FOREIGN KEY ([IdParte]) REFERENCES [dbo].[Parte]([IdParte]) ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 ALTER TABLE [dbo].[Pago] ADD CONSTRAINT [fk_Pago_TarjetaCliente_1] FOREIGN KEY ([IdTarjetaCliente]) REFERENCES [dbo].[TarjetaCliente]([IdTarjetaCliente]) ON UPDATE NO ACTION ON DELETE NO ACTION;
-ALTER TABLE [dbo].[Pago] ADD CONSTRAINT [fk_Pago_Parte_1] FOREIGN KEY ([IdParteCliente]) REFERENCES [dbo].[Parte]([IdParte]) ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE [dbo].[Pago] ADD CONSTRAINT [fk_Pago_Parte_1] FOREIGN KEY ([IdCliente]) REFERENCES [dbo].[Parte]([IdParte]) ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE [dbo].[Pago] ADD CONSTRAINT [fk_Pago_Transferencia_1] FOREIGN KEY ([IdTransferencia]) REFERENCES [dbo].[Transferencia]([IdTransferencia]) ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 ALTER TABLE [dbo].[PagoEstatus] ADD CONSTRAINT [fk_PagoEstatus_ParteRole_1] FOREIGN KEY ([IdParteRole]) REFERENCES [dbo].[ParteRole]([IdParteRole]) ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE [dbo].[PagoEstatus] ADD CONSTRAINT [fk_PagoEstatus_EstatusPago_1] FOREIGN KEY ([IdEstatusPago]) REFERENCES [dbo].[EstatusPago]([IdEstatusPago]) ON UPDATE NO ACTION ON DELETE NO ACTION;
@@ -60,3 +59,8 @@ ALTER TABLE [dbo].[VentaRole] ADD CONSTRAINT [fk_VentaRole_Venta_1] FOREIGN KEY 
 ALTER TABLE [dbo].[VentaRole] ADD CONSTRAINT [fk_VentaRole_ParteRole_1] FOREIGN KEY ([IdParteRole]) REFERENCES [dbo].[ParteRole]([IdParteRole]) ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE [dbo].[VentaRole] ADD CONSTRAINT [fk_VentaRole_TipoParteRole_1] FOREIGN KEY ([IdTipoParteRole]) REFERENCES [dbo].[TipoParteRole]([IdTipoParteRole]) ON UPDATE NO ACTION ON DELETE NO ACTION;
 
+ALTER TABLE [dbo].[CuentaBancaria] ADD CONSTRAINT [fk_CuentaBancaria_Parte_1] FOREIGN KEY ([IdParte]) REFERENCES [dbo].[Parte]([IdParte]) ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE [dbo].[CuentaBancaria] ADD CONSTRAINT [fk_CuentaBancaria_Banco_1] FOREIGN KEY ([IdBanco]) REFERENCES [dbo].[Banco]([IdBanco]) ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+ALTER TABLE [dbo].[AsignacionParteItem] ADD CONSTRAINT [fk_AsignacionParteItem_Parte_1] FOREIGN KEY ([IdParte]) REFERENCES [dbo].[Parte]([IdParte]) ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE [dbo].[AsignacionParteItem] ADD CONSTRAINT [fk_AsignacionParteItem_Item_1] FOREIGN KEY ([IdItem]) REFERENCES [dbo].[Item]([IdItem]) ON UPDATE NO ACTION ON DELETE NO ACTION;

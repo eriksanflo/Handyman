@@ -1,8 +1,9 @@
 CREATE TABLE [dbo].[EstatusVenta]
 (
 	[IdEstatusVenta] [int] NOT NULL IDENTITY(1, 1),
-	[IdTipoEstatusVenta] [int] NULL,
 	[Nombre] [nvarchar] (64) NULL,
+	[IdTipoEstatusVenta] [int] NULL,
+	[TipoEstatus] [nvarchar] (16) NULL,
 	[Activo] [bit] NULL
 )
 GO

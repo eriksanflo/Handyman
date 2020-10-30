@@ -1,12 +1,11 @@
 CREATE TABLE [dbo].[Pago]
 (
 	[IdPago]					[int]				NOT NULL IDENTITY(1, 1),
-	[IdTarjetaCliente]			[int]				NOT NULL,
-	[Folio]						[nvarchar] (16)		NULL,
-	[IdParteCliente]			[uniqueidentifier]	NULL,
-	[NumeroAutorizacion]		[nvarchar] (20)		NULL,
+	[Folio]						[nvarchar] (16)		NOT NULL,
+	[IdTarjetaCliente]			[int]				NULL,
+	[IdTransferencia]			[int]				NULL,	
+	[IdCliente]					[uniqueidentifier]	NOT NULL,	
 	[Importe]					[decimal] (17, 2)	NULL,
-	[ImporteRecibido]			[decimal] (17, 2)	NULL,
 	[Estatus]					[char] (1)			NULL,
 	[FechaRegistro]				datetimeoffset(2)	NULL,
 	[Observaciones]				[nvarchar] (256)	NULL,
