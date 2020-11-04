@@ -19,29 +19,17 @@ namespace Handyman.API.Controllers
                 return BadRequest(result.HttpResponse);
         }
 
-        // GET GetAllCategories
-        /*
-         Tipo; HttpGet
-         Route; Category
-         Nombre funcion: GetTypes()
-         Retornara totas las categorias en formato json, un string
-         */
-
-        // GET GetCategory {IdCategory}
-        /*
-         Tipo; HttpGet
-         Route; Category/{idCategory}
-         Nombre funcion: GetType(int idCategory)
-         Retornara una categoria en formato json, un string
-         */
-
-        // PUT Create/Update a Product
-        /*
-         Tipo; HttpPut
-         Route; Category/{idCategory}/Item
-         Nombre funcion: SaveItem(int idCategory, ItemCommand cmd)
-         Registrara un item del tipo especificado, con la información del comando enviado
-         */
+        [HttpPut]
+        [Route("Category/{idCategory}/Item")]
+        public async Task<IActionResult> SaveItem(int idCategory, ItemCommand cmd)
+        {
+            cmd.IdCategory = idCategory;
+            var result = await Mediator.Send(cmd);
+            if (result.Success)
+                return Ok();
+            else
+                return BadRequest(result.HttpResponse);
+        }
 
         // DELETE Disable a Product
         /*
