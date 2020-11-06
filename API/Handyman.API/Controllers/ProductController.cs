@@ -38,6 +38,12 @@ namespace Handyman.API.Controllers
          Nombre funcion: DeleteItem(int idItem)
          Busca el item especificado y lo marca como inactivo
          */
+        [HttpDelete]
+        [Route("Item/{idItem}")]
+        public async Task<IActionResult> DeleteItem(int idItem)
+        {
+            return Ok();
+        }
 
         // GET GetProducts {IdCategory}
         /*
@@ -46,6 +52,12 @@ namespace Handyman.API.Controllers
          Nombre funcion: GetItemsByTipe(int idCategory)
          Regresa todos los items del Tipo especificad en formato json
          */
+        [HttpGet]
+        [Route("Category/{idCategory}/Item")]
+        public async Task<IActionResult> GetItemsByTipe(int idCategory)
+        {
+            return Ok();
+        }
 
         // GET GetProduct {IdProduct}
         /*
@@ -54,5 +66,11 @@ namespace Handyman.API.Controllers
          Nombre funcion: GetItem(int idProduct)
          Regresa el items en formato json
          */
+        [HttpGet]
+        [Route("Item/{id}")]
+        public async Task<IActionResult> GetItem(int id)
+        {
+            return Ok();
+        }
     }
 }
