@@ -17,4 +17,9 @@
     <ProjectReference Include="..\Handyman.Domain\Handyman.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="EventHandler\Catalog\" />
+    <Folder Include="EventHandler\Part\" />
+  </ItemGroup>
+
 </Project>
