@@ -58,5 +58,6 @@ namespace Handyman.Service.Handler.EventHandler.Product
             category.Nombre = cmd.Name;
             await Task.CompletedTask;
         }
+        ///Prueba nueva rama GitHub
     }
 }
