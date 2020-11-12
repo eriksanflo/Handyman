@@ -7,11 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Handyman.API.Controllers
 {
-    public class PostalController : BaseApiController
+    public class PaymentController : BaseApiController
     {
         [HttpPut]
-        [Route("Part/{idPart}/Address")]
-        public async Task<IActionResult> Save(Guid idPart)
+        public async Task<IActionResult> Save()
         {
             return Ok();
         }
