@@ -1,26 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Handyman.Service.Handler.Commands.Part;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Handyman.API.Controllers
 {
     public class PartController : BaseApiController
     {
         [HttpPut]
-        [Route("Parte")]
-        public async Task<IActionResult> Save()
+        public async Task<IActionResult> Save(CreatePartCommand cmd)
         {
-            return Ok();
+            var result = Mediator.Send(cmd).Result;
+            if (result.Success)
+                return Ok();
+            else
+                return BadRequest(result.HttpResponse);
         }
 
         [HttpDelete]
-        [Route("Parte")]
-        public async Task<IActionResult> Delete()
+        [Route("{idParteRole}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            return Ok();
+            var cmd = new DeletePartCommand(id);
+            var result = Mediator.Send(cmd).Result;
+            if (result.Success)
+                return Ok();
+            else
+                return BadRequest(result.HttpResponse);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get(GetPartCommand cmd)
+        {
+            var result = Mediator.Send(cmd).Result;
+            if (result.Success)
+                return Ok(result.PartInfo);
+            else
+                return BadRequest(result.HttpResponse);
         }
     }
 }
