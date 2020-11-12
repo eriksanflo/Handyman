@@ -10,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace Handyman.Service.Handler.EventHandler.Product
 {
-    public class PutCategoryHandler : IRequestHandler<CategoryCommand, BaseResult>
+    public class PutUnitQuotationHandler : IRequestHandler<UnitQuotationCommand, BaseResult>
     {
         private readonly IApplicationDbContext _contex;
 
-        public PutCategoryHandler(IApplicationDbContext contex)
+        public PutUnitQuotationHandler(IApplicationDbContext contex)
         {
             _contex = contex;
         }
 
-        public async Task<BaseResult> Handle(CategoryCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResult> Handle(UnitQuotationCommand request, CancellationToken cancellationToken)
         {
             var result = new BaseResult();
             try
@@ -39,23 +39,25 @@ namespace Handyman.Service.Handler.EventHandler.Product
             return result;
         }
 
-        private async Task Add(CategoryCommand cmd)
+
+        private async Task Add(UnitQuotationCommand cmd)
         {
-            _contex.TipoItem.Add(new TipoItem
+            _contex.UnidadCotizacion.Add(new UnidadCotizacion
             {
+                IdUnidadCotizacion = cmd.Id,
+                Abreviatura = cmd.Abbreviation,
                 Nombre = cmd.Name,
-                Categoria = cmd.IsCategory,
-                ImagenUrl = cmd.ImagePath,
-                Activo = true,
+                Activo = cmd.Active
             });
             await Task.CompletedTask;
         }
 
-        private async Task Update(CategoryCommand cmd)
+        private async Task Update(UnitQuotationCommand cmd)
         {
-            var category = _contex.TipoItem.Single(x => x.IdTipoItem == cmd.Id);
-            category.Activo = cmd.Active;
-            category.Nombre = cmd.Name;
+            var UnitQuotation = _contex.UnidadCotizacion.Single(x => x.IdUnidadCotizacion == cmd.Id);
+            UnitQuotation.Abreviatura = cmd.Abbreviation;
+            UnitQuotation.Nombre = cmd.Name;
+            UnitQuotation.Activo = cmd.Active;
             await Task.CompletedTask;
         }
     }

@@ -31,6 +31,28 @@ namespace Handyman.API.Controllers
                 return BadRequest(result.HttpResponse);
         }
 
+        [HttpPut]
+        [Route("ItemQuotation")]
+        public async Task<IActionResult> SaveItemQuotation(ItemQuotationCommand cmd)
+        {
+            var result = await Mediator.Send(cmd);
+            if (result.Success)
+                return Ok();
+            else
+                return BadRequest(result.HttpResponse);
+        }
+
+        [HttpPut]
+        [Route("UnitQuotation")]
+        public async Task<IActionResult> SaveUnitQuotation(UnitQuotationCommand cmd)
+        {
+            var result = await Mediator.Send(cmd);
+            if (result.Success)
+                return Ok();
+            else
+                return BadRequest(result.HttpResponse);
+        }
+
         // DELETE Disable a Product
         /*
          Tipo; HttpDel
