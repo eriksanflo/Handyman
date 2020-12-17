@@ -12,9 +12,12 @@ namespace Handyman.Persistence
 
         }
 
+        public virtual DbSet<AccesoProvider> AccesoProvider { get; set; }
         public virtual DbSet<Accesos> Accesos { get; set; }
+        public virtual DbSet<AsignacionParteItem> AsignacionParteItem { get; set; }
         public virtual DbSet<Banco> Banco { get; set; }
         public virtual DbSet<CodigoPostal> CodigoPostal { get; set; }
+        public virtual DbSet<CuentaBancaria> CuentaBancaria { get; set; }
         public virtual DbSet<DireccionPostalParte> DireccionPostalParte { get; set; }
         public virtual DbSet<EstatusPago> EstatusPago { get; set; }
         public virtual DbSet<EstatusPersona> EstatusPersona { get; set; }
@@ -35,22 +38,51 @@ namespace Handyman.Persistence
         public virtual DbSet<PropositoContacto> PropositoContacto { get; set; }
         public virtual DbSet<RedTarjeta> RedTarjeta { get; set; }
         public virtual DbSet<TarjetaCliente> TarjetaCliente { get; set; }
-        public virtual DbSet<TipoEstatusPago> TipoEstatusPago { get; set; }
-        public virtual DbSet<TipoEstatusVenta> TipoEstatusVenta { get; set; }
         public virtual DbSet<TipoItem> TipoItem { get; set; }
         public virtual DbSet<TipoParteRole> TipoParteRole { get; set; }
         public virtual DbSet<TipoPropositoContacto> TipoPropositoContacto { get; set; }
         public virtual DbSet<TipoTarjeta> TipoTarjeta { get; set; }
         public virtual DbSet<TipoTarjetaCredito> TipoTarjetaCredito { get; set; }
+        public virtual DbSet<TipoVenta> TipoVenta { get; set; }
+        public virtual DbSet<Transferencia> Transferencia { get; set; }
         public virtual DbSet<UnidadCotizacion> UnidadCotizacion { get; set; }
         public virtual DbSet<Venta> Venta { get; set; }
         public virtual DbSet<VentaDetalle> VentaDetalle { get; set; }
+        public virtual DbSet<VentaDetalleExtra> VentaDetalleExtra { get; set; }
+        public virtual DbSet<VentaDetalleImagen> VentaDetalleImagen { get; set; }
+        public virtual DbSet<VentaDetalleRole> VentaDetalleRole { get; set; }
         public virtual DbSet<VentaEstatus> VentaEstatus { get; set; }
         public virtual DbSet<VentaEvaluacion> VentaEvaluacion { get; set; }
         public virtual DbSet<VentaRole> VentaRole { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AccesoProvider>(entity =>
+            {
+                entity.HasKey(e => e.IdAcceso)
+                    .HasName("IdAccesoProvider");
+
+                entity.Property(e => e.IdAcceso).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.AccessToken).HasMaxLength(128);
+
+                entity.Property(e => e.AppSecret).HasMaxLength(128);
+
+                entity.Property(e => e.ApplicationId)
+                    .HasColumnName("ApplicationID")
+                    .HasMaxLength(128);
+
+                entity.Property(e => e.Provider)
+                    .IsRequired()
+                    .HasMaxLength(64);
+
+                entity.HasOne(d => d.IdAccesoNavigation)
+                    .WithOne(p => p.AccesoProvider)
+                    .HasForeignKey<AccesoProvider>(d => d.IdAcceso)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_AccesoProvider_Accesos_1");
+            });
+
             modelBuilder.Entity<Accesos>(entity =>
             {
                 entity.HasKey(e => e.IdAcceso)
@@ -65,6 +97,32 @@ namespace Handyman.Persistence
                     .HasForeignKey(d => d.IdParte)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_Accesos_Parte_1");
+            });
+
+            modelBuilder.Entity<AsignacionParteItem>(entity =>
+            {
+                entity.HasKey(e => e.IdAsignacionParteItem)
+                    .HasName("IdAsignacionParteItem");
+
+                entity.Property(e => e.FechaFinal).HasColumnType("datetimeoffset(2)");
+
+                entity.Property(e => e.FechaInicial).HasColumnType("datetimeoffset(2)");
+
+                entity.Property(e => e.ImporteIncremento).HasColumnType("decimal(17, 2)");
+
+                entity.Property(e => e.TipoEmergente).HasMaxLength(8);
+
+                entity.HasOne(d => d.IdItemNavigation)
+                    .WithMany(p => p.AsignacionParteItem)
+                    .HasForeignKey(d => d.IdItem)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_AsignacionParteItem_Item_1");
+
+                entity.HasOne(d => d.IdParteNavigation)
+                    .WithMany(p => p.AsignacionParteItem)
+                    .HasForeignKey(d => d.IdParte)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_AsignacionParteItem_Parte_1");
             });
 
             modelBuilder.Entity<Banco>(entity =>
@@ -102,6 +160,32 @@ namespace Handyman.Persistence
                 entity.Property(e => e.Region3).HasMaxLength(256);
 
                 entity.Property(e => e.Region4).HasMaxLength(256);
+            });
+
+            modelBuilder.Entity<CuentaBancaria>(entity =>
+            {
+                entity.HasKey(e => e.IdCuentaBancaria)
+                    .HasName("IdCuentaBancaria");
+
+                entity.Property(e => e.Clabe)
+                    .IsRequired()
+                    .HasMaxLength(256);
+
+                entity.Property(e => e.Numero)
+                    .IsRequired()
+                    .HasMaxLength(20);
+
+                entity.HasOne(d => d.IdBancoNavigation)
+                    .WithMany(p => p.CuentaBancaria)
+                    .HasForeignKey(d => d.IdBanco)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_CuentaBancaria_Banco_1");
+
+                entity.HasOne(d => d.IdParteNavigation)
+                    .WithMany(p => p.CuentaBancaria)
+                    .HasForeignKey(d => d.IdParte)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_CuentaBancaria_Parte_1");
             });
 
             modelBuilder.Entity<DireccionPostalParte>(entity =>
@@ -159,10 +243,7 @@ namespace Handyman.Persistence
 
                 entity.Property(e => e.Nombre).HasMaxLength(64);
 
-                entity.HasOne(d => d.IdTipoEstatusPagoNavigation)
-                    .WithMany(p => p.EstatusPago)
-                    .HasForeignKey(d => d.IdTipoEstatusPago)
-                    .HasConstraintName("fk_EstatusPago_TipoEstatusPago_1");
+                entity.Property(e => e.TipoEstatus).HasMaxLength(16);
             });
 
             modelBuilder.Entity<EstatusPersona>(entity =>
@@ -182,10 +263,7 @@ namespace Handyman.Persistence
 
                 entity.Property(e => e.Nombre).HasMaxLength(64);
 
-                entity.HasOne(d => d.IdTipoEstatusVentaNavigation)
-                    .WithMany(p => p.EstatusVenta)
-                    .HasForeignKey(d => d.IdTipoEstatusVenta)
-                    .HasConstraintName("fk_EstatusVenta_TipoEstatusVenta_1");
+                entity.Property(e => e.TipoEstatus).HasMaxLength(16);
             });
 
             modelBuilder.Entity<Item>(entity =>
@@ -226,9 +304,9 @@ namespace Handyman.Persistence
                 entity.HasKey(e => e.IdItemPrecio)
                     .HasName("IdItemPrecio");
 
-                entity.Property(e => e.FechaFinal).HasColumnType("date");
+                entity.Property(e => e.FechaFinal).HasColumnType("datetime");
 
-                entity.Property(e => e.FechaInicial).HasColumnType("date");
+                entity.Property(e => e.FechaInicial).HasColumnType("datetime");
 
                 entity.Property(e => e.Precio).HasColumnType("decimal(17, 2)");
 
@@ -237,6 +315,12 @@ namespace Handyman.Persistence
                     .HasForeignKey(d => d.IdItem)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_ItemPrecio_Item_1");
+
+                entity.HasOne(d => d.IdItemCotizacionNavigation)
+                    .WithMany(p => p.ItemPrecio)
+                    .HasForeignKey(d => d.IdItemCotizacion)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_ItemPrecio_ItemCotizacion_1");
             });
 
             modelBuilder.Entity<ItemServicio>(entity =>
@@ -320,26 +404,29 @@ namespace Handyman.Persistence
 
                 entity.Property(e => e.FechaRegistro).HasColumnType("datetimeoffset(2)");
 
-                entity.Property(e => e.Folio).HasMaxLength(16);
+                entity.Property(e => e.Folio)
+                    .IsRequired()
+                    .HasMaxLength(16);
 
                 entity.Property(e => e.Importe).HasColumnType("decimal(17, 2)");
 
-                entity.Property(e => e.ImporteRecibido).HasColumnType("decimal(17, 2)");
-
-                entity.Property(e => e.NumeroAutorizacion).HasMaxLength(20);
-
                 entity.Property(e => e.Observaciones).HasMaxLength(256);
 
-                entity.HasOne(d => d.IdParteClienteNavigation)
+                entity.HasOne(d => d.IdClienteNavigation)
                     .WithMany(p => p.Pago)
-                    .HasForeignKey(d => d.IdParteCliente)
+                    .HasForeignKey(d => d.IdCliente)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_Pago_Parte_1");
 
                 entity.HasOne(d => d.IdTarjetaClienteNavigation)
                     .WithMany(p => p.Pago)
                     .HasForeignKey(d => d.IdTarjetaCliente)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_Pago_TarjetaCliente_1");
+
+                entity.HasOne(d => d.IdTransferenciaNavigation)
+                    .WithMany(p => p.Pago)
+                    .HasForeignKey(d => d.IdTransferencia)
+                    .HasConstraintName("fk_Pago_Transferencia_1");
             });
 
             modelBuilder.Entity<PagoEstatus>(entity =>
@@ -535,22 +622,6 @@ namespace Handyman.Persistence
                     .HasConstraintName("fk_TarjetaCliente_TipoTarjeta_1");
             });
 
-            modelBuilder.Entity<TipoEstatusPago>(entity =>
-            {
-                entity.HasKey(e => e.IdTipoEstatusPago)
-                    .HasName("IdTipoEstatusPago");
-
-                entity.Property(e => e.Nombre).HasMaxLength(64);
-            });
-
-            modelBuilder.Entity<TipoEstatusVenta>(entity =>
-            {
-                entity.HasKey(e => e.IdTipoEstatusVenta)
-                    .HasName("IdTipoEstatusVenta");
-
-                entity.Property(e => e.Nombre).HasMaxLength(16);
-            });
-
             modelBuilder.Entity<TipoItem>(entity =>
             {
                 entity.HasKey(e => e.IdTipoItem)
@@ -599,6 +670,26 @@ namespace Handyman.Persistence
                 entity.Property(e => e.Nombre).HasMaxLength(32);
             });
 
+            modelBuilder.Entity<TipoVenta>(entity =>
+            {
+                entity.HasKey(e => e.IdTipoVenta)
+                    .HasName("IdTipoVenta");
+
+                entity.Property(e => e.Nombre).HasMaxLength(32);
+            });
+
+            modelBuilder.Entity<Transferencia>(entity =>
+            {
+                entity.HasKey(e => e.IdTransferencia)
+                    .HasName("IdTransferencia");
+
+                entity.Property(e => e.Folio).HasMaxLength(20);
+
+                entity.Property(e => e.NumeroAutorizacion).HasMaxLength(20);
+
+                entity.Property(e => e.UrlComprobante).HasMaxLength(256);
+            });
+
             modelBuilder.Entity<UnidadCotizacion>(entity =>
             {
                 entity.HasKey(e => e.IdUnidadCotizacion)
@@ -641,6 +732,7 @@ namespace Handyman.Persistence
                 entity.HasOne(d => d.IdItemNavigation)
                     .WithMany(p => p.VentaDetalle)
                     .HasForeignKey(d => d.IdItem)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_VentaDetalle_Item_1");
 
                 entity.HasOne(d => d.IdItemPrecioNavigation)
@@ -656,12 +748,52 @@ namespace Handyman.Persistence
                 entity.HasOne(d => d.IdTipoItemNavigation)
                     .WithMany(p => p.VentaDetalle)
                     .HasForeignKey(d => d.IdTipoItem)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_VentaDetalle_TipoItem_1");
 
                 entity.HasOne(d => d.IdVentaNavigation)
                     .WithMany(p => p.VentaDetalle)
                     .HasForeignKey(d => d.IdVenta)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_VentaDetalle_Venta_1");
+            });
+
+            modelBuilder.Entity<VentaDetalleExtra>(entity =>
+            {
+                entity.HasKey(e => e.IdVentaDetalleExtra)
+                    .HasName("IdVentaDetalleExtra");
+
+                entity.Property(e => e.Descripcion).HasMaxLength(256);
+
+                entity.HasOne(d => d.IdVentaDetalleNavigation)
+                    .WithMany(p => p.VentaDetalleExtra)
+                    .HasForeignKey(d => d.IdVentaDetalle)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_VentaDetalleExtra_VentaDetalle_1");
+            });
+
+            modelBuilder.Entity<VentaDetalleImagen>(entity =>
+            {
+                entity.HasKey(e => e.IdVentaDetalleImagen)
+                    .HasName("IdVentaDetalleImagen");
+
+                entity.Property(e => e.ImagenUrl).HasMaxLength(256);
+
+                entity.HasOne(d => d.IdVentaDetalleNavigation)
+                    .WithMany(p => p.VentaDetalleImagen)
+                    .HasForeignKey(d => d.IdVentaDetalle)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_VentaDetalleImagen_VentaDetalle_1");
+            });
+
+            modelBuilder.Entity<VentaDetalleRole>(entity =>
+            {
+                entity.HasKey(e => e.IdVentaDetalleRole)
+                    .HasName("IdVentaDetalleRole");
+
+                entity.Property(e => e.FechaFinal).HasColumnType("datetimeoffset(2)");
+
+                entity.Property(e => e.FechaInicial).HasColumnType("datetimeoffset(2)");
             });
 
             modelBuilder.Entity<VentaEstatus>(entity =>
@@ -733,9 +865,7 @@ namespace Handyman.Persistence
                     .HasConstraintName("fk_VentaRole_Venta_1");
             });
 
-            //OnModelCreatingPartial(modelBuilder);
         }
-
         public async Task<int> SaveChangesAsync()
         {
             return await base.SaveChangesAsync();

@@ -5,10 +5,8 @@ CREATE TABLE [dbo].[ItemPrecio]
 	[IdItem]			[int]	NOT NULL,
 	[Desde]				[int]	NOT NULL,
 	[Hasta]				[int]	NOT NULL,
-	[FechaInicial]		[date]	NULL,
-	[FechaFinal]		[date]	NULL,
-	[HoraInicial]		[time]	NULL,
-	[HoraFinal]			[time]	NULL,
+	[FechaInicial]		[datetime]	NULL,
+	[FechaFinal]		[datetime]	NULL,
 	[Precio]			[decimal] (17, 2) NULL,
 	[Activo]			[bit] NOT NULL
 )

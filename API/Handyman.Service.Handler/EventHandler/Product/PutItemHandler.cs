@@ -26,10 +26,12 @@ namespace Handyman.Service.Handler.EventHandler.Product
             try
             {
                 var isNew = request.IdProduct <= 0;
-                if (isNew)
-                    await Create(request);
-                else
-                    await Update(request);
+                var domain = isNew ? new Item() : GetEntity(request.IdProduct);
+                domain.IdTipoItem = request.IdCategory;
+                domain.Codigo = request.Code;
+                domain.Nombre = request.Description;
+                domain.Activo = request.Active;
+                await AttachPrices(domain, request);
 
                 await _contex.SaveChangesAsync();
                 result.SetSuccess();
@@ -48,31 +50,22 @@ namespace Handyman.Service.Handler.EventHandler.Product
                 .Include(x => x.ItemPrecio)
                 .Single(x => x.IdItem == id);
         }
-        private async Task Create(ItemCommand request)
+        private async Task AttachPrices(Item domain, ItemCommand request)
         {
-            var _item = new Item
+            foreach (var item in request.Prices)
             {
-                IdTipoItem = request.IdCategory,
-                Codigo = request.Code,
-                Nombre = request.Description,
-            };
-            _contex.Item.Add(_item);
-            await Task.CompletedTask;
-        }
-        private async Task Update(ItemCommand request)
-        {
-            var _item = GetEntity(request.IdProduct);
-            _item.Codigo = request.Code;
-            if (_item.ItemServicio == null && !string.IsNullOrEmpty(request.ImageUri))
-            {
-                _item.ItemServicio = new ItemServicio
-                {
-                    ImagenUrl = request.ImageUri
-                };
-            }
-            else if (_item.ItemServicio != null)
-            {
-                _item.ItemServicio.ImagenUrl = request.ImageUri;
+                var isNew = domain.ItemPrecio.Any(x => x.IdItemPrecio == item.Id);
+                var model = isNew ? domain.ItemPrecio.FirstOrDefault(x => x.IdItemPrecio == item.Id) : new ItemPrecio();
+                model.IdItem = item.IdItem;
+                model.IdItemCotizacion = item.IdItemCotizacion;
+                model.Desde = item.FromQuantity;
+                model.Hasta = item.ToQuantity;
+                model.FechaInicial = item.FromDate.DateTime;
+                model.FechaFinal = item.ToDate.GetValueOrDefault().DateTime;
+                model.Precio = item.Price;
+                model.Activo = item.Active;
+                if (isNew)
+                    domain.ItemPrecio.Add(model);
             }
             await Task.CompletedTask;
         }

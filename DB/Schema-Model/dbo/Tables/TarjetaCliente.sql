@@ -11,6 +11,8 @@ CREATE TABLE [dbo].[TarjetaCliente]
 	[CVV]				[nvarchar] (256)		NOT NULL,
 	[IsAMEX]			[bit]					NULL,
 	[IsDefault]			[bit]					NOT NULL,
+	[FechaInicio]		[datetimeoffset](7)		NOT NULL,
+	[FechaFin]			[datetimeoffset](7)		NULL,
 )
 GO
 ALTER TABLE [dbo].[TarjetaCliente] ADD CONSTRAINT [IdTarjetaCliente] PRIMARY KEY CLUSTERED ([IdTarjetaCliente])

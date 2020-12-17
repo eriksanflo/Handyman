@@ -21,6 +21,8 @@ namespace Handyman.Domain.Models
         public string Cvv { get; set; }
         public bool? IsAmex { get; set; }
         public bool IsDefault { get; set; }
+        public DateTimeOffset FechaInicio { get; set; }
+        public DateTimeOffset? FechaFin { get; set; }
 
         public virtual Banco IdBancoNavigation { get; set; }
         public virtual Parte IdParteNavigation { get; set; }

@@ -6,9 +6,12 @@ namespace Handyman.Service.Handler.ContextInterface
 {
     public interface IApplicationDbContext
     {
+        DbSet<AccesoProvider> AccesoProvider { get; set; }
         DbSet<Accesos> Accesos { get; set; }
+        DbSet<AsignacionParteItem> AsignacionParteItem { get; set; }
         DbSet<Banco> Banco { get; set; }
         DbSet<CodigoPostal> CodigoPostal { get; set; }
+        DbSet<CuentaBancaria> CuentaBancaria { get; set; }
         DbSet<DireccionPostalParte> DireccionPostalParte { get; set; }
         DbSet<EstatusPago> EstatusPago { get; set; }
         DbSet<EstatusPersona> EstatusPersona { get; set; }
@@ -29,16 +32,19 @@ namespace Handyman.Service.Handler.ContextInterface
         DbSet<PropositoContacto> PropositoContacto { get; set; }
         DbSet<RedTarjeta> RedTarjeta { get; set; }
         DbSet<TarjetaCliente> TarjetaCliente { get; set; }
-        DbSet<TipoEstatusPago> TipoEstatusPago { get; set; }
-        DbSet<TipoEstatusVenta> TipoEstatusVenta { get; set; }
         DbSet<TipoItem> TipoItem { get; set; }
         DbSet<TipoParteRole> TipoParteRole { get; set; }
         DbSet<TipoPropositoContacto> TipoPropositoContacto { get; set; }
         DbSet<TipoTarjeta> TipoTarjeta { get; set; }
         DbSet<TipoTarjetaCredito> TipoTarjetaCredito { get; set; }
+        DbSet<TipoVenta> TipoVenta { get; set; }
+        DbSet<Transferencia> Transferencia { get; set; }
         DbSet<UnidadCotizacion> UnidadCotizacion { get; set; }
         DbSet<Venta> Venta { get; set; }
         DbSet<VentaDetalle> VentaDetalle { get; set; }
+        DbSet<VentaDetalleExtra> VentaDetalleExtra { get; set; }
+        DbSet<VentaDetalleImagen> VentaDetalleImagen { get; set; }
+        DbSet<VentaDetalleRole> VentaDetalleRole { get; set; }
         DbSet<VentaEstatus> VentaEstatus { get; set; }
         DbSet<VentaEvaluacion> VentaEvaluacion { get; set; }
         DbSet<VentaRole> VentaRole { get; set; }

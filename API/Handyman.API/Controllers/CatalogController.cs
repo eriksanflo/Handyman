@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Handyman.Service.Handler.Commands.Catalog;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Handyman.API.Controllers
 {
@@ -13,28 +10,48 @@ namespace Handyman.API.Controllers
         [Route("Location/{postalCode}")]
         public async Task<IActionResult> FindMyLocation(string postalCode)
         {
-            return Ok();
+            var cmd = new FindLocationByPostalCodeCommand(postalCode);
+            var result = await Mediator.Send(cmd);
+            if (result.Success)
+                return Ok(result.Matched);
+            else
+                return BadRequest(result.HttpResponse);
         }
 
         [HttpGet]
         [Route("Location/State")]
         public async Task<IActionResult> GetStates()
         {
-            return Ok();
+            var cmd = new GetStatesCommand();
+            var result = await Mediator.Send(cmd);
+            if (result.Success)
+                return Ok(result.PostalCode);
+            else
+                return BadRequest(result.HttpResponse);
         }
 
         [HttpGet]
         [Route("Location/state/{stateId}/township")]
         public async Task<IActionResult> GetTownshipByState(int stateId)
         {
-            return Ok();
+            var cmd = new GetTownshipByStateIdCommand(stateId);
+            var result = await Mediator.Send(cmd);
+            if (result.Success)
+                return Ok(result.PostalCode);
+            else
+                return BadRequest(result.HttpResponse);
         }
 
         [HttpGet]
         [Route("Location/township/{townId}/city")]
         public async Task<IActionResult> GetCityByTown(int townId)
         {
-            return Ok();
+            var cmd = new GetCitiesByTownIdCommand(townId);
+            var result = await Mediator.Send(cmd);
+            if (result.Success)
+                return Ok(result.PostalCode);
+            else
+                return BadRequest(result.HttpResponse);
         }
     }
 }

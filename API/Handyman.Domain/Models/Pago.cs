@@ -13,18 +13,18 @@ namespace Handyman.Domain.Models
         }
 
         public int IdPago { get; set; }
-        public int IdTarjetaCliente { get; set; }
         public string Folio { get; set; }
-        public Guid? IdParteCliente { get; set; }
-        public string NumeroAutorizacion { get; set; }
+        public int? IdTarjetaCliente { get; set; }
+        public int? IdTransferencia { get; set; }
+        public Guid IdCliente { get; set; }
         public decimal? Importe { get; set; }
-        public decimal? ImporteRecibido { get; set; }
         public string Estatus { get; set; }
         public DateTimeOffset? FechaRegistro { get; set; }
         public string Observaciones { get; set; }
 
-        public virtual Parte IdParteClienteNavigation { get; set; }
+        public virtual Parte IdClienteNavigation { get; set; }
         public virtual TarjetaCliente IdTarjetaClienteNavigation { get; set; }
+        public virtual Transferencia IdTransferenciaNavigation { get; set; }
         public virtual ICollection<PagoEstatus> PagoEstatus { get; set; }
         public virtual ICollection<PagoRole> PagoRole { get; set; }
         public virtual ICollection<VentaDetalle> VentaDetalle { get; set; }

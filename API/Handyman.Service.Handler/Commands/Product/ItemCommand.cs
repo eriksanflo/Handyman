@@ -19,10 +19,14 @@ namespace Handyman.Service.Handler.Commands.Product
 
     public class PriceConfiguration
     {
-        public decimal FromQuantity { get; set; }
-        public decimal ToQuantity { get; set; }
+        public int Id { get; set; }
+        public int IdItem { get; set; }
+        public int IdItemCotizacion { get; set; }
+        public int FromQuantity { get; set; }
+        public int ToQuantity { get; set; }
         public decimal Price { get; set; }
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
+        public DateTimeOffset FromDate { get; set; }
+        public DateTimeOffset? ToDate { get; set; }
+        public bool Active { get; set; }
     }
 }

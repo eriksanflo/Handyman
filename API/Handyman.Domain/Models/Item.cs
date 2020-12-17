@@ -7,6 +7,7 @@ namespace Handyman.Domain.Models
     {
         public Item()
         {
+            AsignacionParteItem = new HashSet<AsignacionParteItem>();
             ItemCotizacion = new HashSet<ItemCotizacion>();
             ItemPrecio = new HashSet<ItemPrecio>();
             VentaDetalle = new HashSet<VentaDetalle>();
@@ -20,6 +21,7 @@ namespace Handyman.Domain.Models
 
         public virtual TipoItem IdTipoItemNavigation { get; set; }
         public virtual ItemServicio ItemServicio { get; set; }
+        public virtual ICollection<AsignacionParteItem> AsignacionParteItem { get; set; }
         public virtual ICollection<ItemCotizacion> ItemCotizacion { get; set; }
         public virtual ICollection<ItemPrecio> ItemPrecio { get; set; }
         public virtual ICollection<VentaDetalle> VentaDetalle { get; set; }

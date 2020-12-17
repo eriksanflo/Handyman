@@ -55,6 +55,10 @@ ALTER TABLE [dbo].[VentaEstatus] ADD CONSTRAINT [fk_VentaEstatus_ParteRole_1] FO
 
 ALTER TABLE [dbo].[VentaEvaluacion] ADD CONSTRAINT [fk_VentaEvaluacion_Venta_1] FOREIGN KEY ([IdVenta]) REFERENCES [dbo].[Venta]([IdVenta]) ON UPDATE NO ACTION ON DELETE NO ACTION;
 
+ALTER TABLE [dbo].[VentaDetalleExtra] ADD CONSTRAINT [fk_VentaDetalleExtra_VentaDetalle_1] FOREIGN KEY ([IdVentaDetalle]) REFERENCES [dbo].[VentaDetalle]([IdVentaDetalle]) ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+ALTER TABLE [dbo].[VentaDetalleImagen] ADD CONSTRAINT [fk_VentaDetalleImagen_VentaDetalle_1] FOREIGN KEY ([IdVentaDetalle]) REFERENCES [dbo].[VentaDetalle]([IdVentaDetalle]) ON UPDATE NO ACTION ON DELETE NO ACTION;
+
 ALTER TABLE [dbo].[VentaRole] ADD CONSTRAINT [fk_VentaRole_Venta_1] FOREIGN KEY ([IdVenta]) REFERENCES [dbo].[Venta]([IdVenta]) ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE [dbo].[VentaRole] ADD CONSTRAINT [fk_VentaRole_ParteRole_1] FOREIGN KEY ([IdParteRole]) REFERENCES [dbo].[ParteRole]([IdParteRole]) ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE [dbo].[VentaRole] ADD CONSTRAINT [fk_VentaRole_TipoParteRole_1] FOREIGN KEY ([IdTipoParteRole]) REFERENCES [dbo].[TipoParteRole]([IdTipoParteRole]) ON UPDATE NO ACTION ON DELETE NO ACTION;

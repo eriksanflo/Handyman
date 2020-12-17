@@ -5,6 +5,11 @@ namespace Handyman.Domain.Models
 {
     public partial class ItemCotizacion
     {
+        public ItemCotizacion()
+        {
+            ItemPrecio = new HashSet<ItemPrecio>();
+        }
+
         public int IdItemCotizacion { get; set; }
         public int IdItem { get; set; }
         public int IdUnidadCotizacion { get; set; }
@@ -13,5 +18,6 @@ namespace Handyman.Domain.Models
 
         public virtual Item IdItemNavigation { get; set; }
         public virtual UnidadCotizacion IdUnidadCotizacionNavigation { get; set; }
+        public virtual ICollection<ItemPrecio> ItemPrecio { get; set; }
     }
 }

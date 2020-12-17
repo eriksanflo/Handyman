@@ -13,6 +13,7 @@ namespace Handyman.Domain.Models
         }
 
         public int IdVenta { get; set; }
+        public int IdTipoVenta { get; set; }
         public string Folio { get; set; }
         public DateTime? Fecha { get; set; }
         public DateTimeOffset? FechaRegistro { get; set; }

@@ -7,6 +7,7 @@ namespace Handyman.Domain.Models
     {
         public Banco()
         {
+            CuentaBancaria = new HashSet<CuentaBancaria>();
             TarjetaCliente = new HashSet<TarjetaCliente>();
         }
 
@@ -15,6 +16,7 @@ namespace Handyman.Domain.Models
         public string Nombre { get; set; }
         public bool? Activo { get; set; }
 
+        public virtual ICollection<CuentaBancaria> CuentaBancaria { get; set; }
         public virtual ICollection<TarjetaCliente> TarjetaCliente { get; set; }
     }
 }

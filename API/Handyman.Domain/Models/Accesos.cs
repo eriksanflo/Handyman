@@ -12,5 +12,6 @@ namespace Handyman.Domain.Models
         public bool? Activo { get; set; }
 
         public virtual Parte IdParteNavigation { get; set; }
+        public virtual AccesoProvider AccesoProvider { get; set; }
     }
 }

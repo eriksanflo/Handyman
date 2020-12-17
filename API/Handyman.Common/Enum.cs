@@ -8,4 +8,9 @@
         Usuario = 4,
         Handyman = 5,
     }
+    public enum eTipoVenta
+    {
+        Venta = 1,
+        Cotizacion = 2
+    }
 }

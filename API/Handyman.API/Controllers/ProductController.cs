@@ -6,8 +6,6 @@ namespace Handyman.API.Controllers
 {
     public class ProductController : BaseApiController
     {
-
-        // PUT Create/Update Cagetory
         [HttpPut]
         [Route("Category")]
         public async Task<IActionResult> SaveCategory(CategoryCommand cmd)
@@ -31,46 +29,26 @@ namespace Handyman.API.Controllers
                 return BadRequest(result.HttpResponse);
         }
 
-        // DELETE Disable a Product
-        /*
-         Tipo; HttpDel
-         Route; Item/{idItem}
-         Nombre funcion: DeleteItem(int idItem)
-         Busca el item especificado y lo marca como inactivo
-         */
         [HttpDelete]
         [Route("Item/{idItem}")]
         public async Task<IActionResult> DeleteItem(int idItem)
         {
-            return Ok();
+            var result = await Mediator.Send(new DeleteItemCommand(idItem));
+            if (result.Success)
+                return Ok();
+            else
+                return BadRequest(result.HttpResponse);
         }
 
-        // GET GetProducts {IdCategory}
-        /*
-         Tipo; HttpGet
-         Route; Category/{idCategory}/Item
-         Nombre funcion: GetItemsByTipe(int idCategory)
-         Regresa todos los items del Tipo especificad en formato json
-         */
-        [HttpGet]
-        [Route("Category/{idCategory}/Item")]
-        public async Task<IActionResult> GetItemsByTipe(int idCategory)
-        {
-            return Ok();
-        }
-
-        // GET GetProduct {IdProduct}
-        /*
-         Tipo; HttpGet
-         Route; Item/{idProduct}
-         Nombre funcion: GetItem(int idProduct)
-         Regresa el items en formato json
-         */
         [HttpGet]
         [Route("Item/{id}")]
         public async Task<IActionResult> GetItem(int id)
         {
-            return Ok();
+            var result = await Mediator.Send(new GetItemCommand(id));
+            if (result.Success)
+                return Ok(result.ItemInfo);
+            else
+                return BadRequest(result.HttpResponse);
         }
     }
 }
