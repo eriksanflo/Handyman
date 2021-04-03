@@ -21,6 +21,7 @@ namespace Handyman.Domain.Models
 
         public virtual Organizacion Organizacion { get; set; }
         public virtual Persona Persona { get; set; }
+        public virtual ParteAceptaTermino ParteAceptaTermino { get; set; }
         public virtual ICollection<Accesos> Accesos { get; set; }
         public virtual ICollection<AsignacionParteItem> AsignacionParteItem { get; set; }
         public virtual ICollection<CuentaBancaria> CuentaBancaria { get; set; }

@@ -8,6 +8,7 @@ namespace Handyman.Domain.Models
         public TarjetaCliente()
         {
             Pago = new HashSet<Pago>();
+            Venta = new HashSet<Venta>();
         }
 
         public int IdTarjetaCliente { get; set; }
@@ -29,5 +30,6 @@ namespace Handyman.Domain.Models
         public virtual RedTarjeta IdRedTarjetaNavigation { get; set; }
         public virtual TipoTarjeta IdTipoTarjetaNavigation { get; set; }
         public virtual ICollection<Pago> Pago { get; set; }
+        public virtual ICollection<Venta> Venta { get; set; }
     }
 }

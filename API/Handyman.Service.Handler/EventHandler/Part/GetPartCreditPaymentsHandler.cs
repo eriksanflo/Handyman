@@ -24,9 +24,9 @@ namespace Handyman.Service.Handler.EventHandler.Part
             try
             {
                 var matched = _contex.TarjetaCliente
-                    .Include(x => x.IdBanco)
-                    .Include(x => x.IdRedTarjeta)
-                    .Include(x => x.IdTipoTarjeta)
+                    .Include(x => x.IdBancoNavigation)
+                    .Include(x => x.IdRedTarjetaNavigation)
+                    .Include(x => x.IdTipoTarjetaNavigation)
                     .Where(x => x.IdParte == request.PartId && x.FechaFin == null);
                 result.CreditCards = new List<Common.Info.CardCreditCardPaymentInfo>();
                 foreach (var _match in matched)

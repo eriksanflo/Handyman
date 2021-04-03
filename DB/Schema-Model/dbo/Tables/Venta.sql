@@ -5,6 +5,8 @@
 	[Folio] [nvarchar] (16) NULL,
 	[Fecha] [date] NULL,
 	[FechaRegistro] datetimeoffset(2) NULL,
+	[IdOrden] [nvarchar] (250) NULL,
+	[IdTarjetaCliente] [int] NULL,
 )
 GO
 ALTER TABLE [dbo].[Venta] ADD CONSTRAINT [IdVenta] PRIMARY KEY CLUSTERED  ([IdVenta])

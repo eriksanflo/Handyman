@@ -41,6 +41,11 @@ namespace Handyman.Service.Handler.EventHandler.Part
                     domain.FechaInicio = DateTimeOffset.Now;
                     _contex.TarjetaCliente.Add(domain);
                 }
+                
+                var existing = _contex.TarjetaCliente.Where(x => x.IdParte == request.IdParte);
+                foreach (var item in existing)
+                    item.IsDefault = false;
+
                 await _contex.SaveChangesAsync();
                 result.SetSuccess();
             }

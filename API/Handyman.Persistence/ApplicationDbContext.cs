@@ -12,6 +12,7 @@ namespace Handyman.Persistence
 
         }
 
+        public virtual DbSet<Configuracion> Configuracion { get; set; }
         public virtual DbSet<AccesoProvider> AccesoProvider { get; set; }
         public virtual DbSet<Accesos> Accesos { get; set; }
         public virtual DbSet<AsignacionParteItem> AsignacionParteItem { get; set; }
@@ -54,9 +55,21 @@ namespace Handyman.Persistence
         public virtual DbSet<VentaEstatus> VentaEstatus { get; set; }
         public virtual DbSet<VentaEvaluacion> VentaEvaluacion { get; set; }
         public virtual DbSet<VentaRole> VentaRole { get; set; }
+        public virtual DbSet<Cargo> Cargo { get; set; }
+        public virtual DbSet<TipoItemComision> TipoItemComision { get; set; }
+        public virtual DbSet<VentaImagen> VentaImagen { get; set; }
+        public virtual DbSet<ParteAceptaTermino> ParteAceptaTermino { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Configuracion>(entity =>
+            {
+                entity.HasKey(e => e.IdConfiguracion).HasName("IdConfiguracion");
+                entity.Property(e => e.IdConfiguracion).ValueGeneratedOnAdd();
+                entity.Property(e => e.Nombre).HasMaxLength(64);
+                entity.Property(e => e.ActualizacionCode).HasMaxLength(32);
+            });
+
             modelBuilder.Entity<AccesoProvider>(entity =>
             {
                 entity.HasKey(e => e.IdAcceso)
@@ -704,14 +717,48 @@ namespace Handyman.Persistence
 
             modelBuilder.Entity<Venta>(entity =>
             {
-                entity.HasKey(e => e.IdVenta)
-                    .HasName("IdVenta");
-
+                entity.HasKey(e => e.IdVenta).HasName("IdVenta");
                 entity.Property(e => e.Fecha).HasColumnType("date");
-
                 entity.Property(e => e.FechaRegistro).HasColumnType("datetimeoffset(2)");
-
                 entity.Property(e => e.Folio).HasMaxLength(16);
+                entity.HasOne(d => d.IdTarjetaClienteNavigation)
+                    .WithMany(p => p.Venta)
+                    .HasForeignKey(d => d.IdTarjetaCliente)
+                    .HasConstraintName("fk_Venta_TarjetaCliente_1");
+            });
+
+            modelBuilder.Entity<Cargo>(entity =>
+            {
+                entity.HasKey(e => e.IdCargo)
+                    .HasName("IdCargo");
+
+                entity.Property(e => e.IdCargo).HasMaxLength(250);
+
+                entity.Property(e => e.Importe).HasColumnType("decimal(17, 2)");
+
+                entity.Property(e => e.Reembolsado).HasColumnType("decimal(17, 2)");
+
+                entity.HasOne(d => d.IdVentaNavigation)
+                    .WithMany(p => p.Cargo)
+                    .HasForeignKey(d => d.IdVenta)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_Cargo_Venta_1");
+            });
+
+            modelBuilder.Entity<VentaImagen>(entity =>
+            {
+                entity.HasKey(e => e.IdVentaImagen)
+                    .HasName("IdVentaImagen");
+
+                entity.Property(e => e.Extension).HasMaxLength(16);
+
+                entity.Property(e => e.Nombre).HasMaxLength(250);
+
+                entity.HasOne(d => d.IdVentaNavigation)
+                    .WithMany(p => p.VentaImagen)
+                    .HasForeignKey(d => d.IdVenta)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_VentaImagen_Venta_1");
             });
 
             modelBuilder.Entity<VentaDetalle>(entity =>
@@ -865,6 +912,43 @@ namespace Handyman.Persistence
                     .HasConstraintName("fk_VentaRole_Venta_1");
             });
 
+            modelBuilder.Entity<TipoItemComision>(entity =>
+            {
+                entity.HasKey(e => e.IdTipoItemComision)
+                    .HasName("IdTipoItemComision");
+
+                entity.Property(e => e.Desde).HasColumnType("decimal(17, 2)");
+
+                entity.Property(e => e.Hasta).HasColumnType("decimal(17, 2)");
+
+                entity.Property(e => e.TipoCalculo)
+                    .IsRequired()
+                    .HasMaxLength(8);
+
+                entity.Property(e => e.Valor).HasColumnType("decimal(17, 2)");
+
+                entity.HasOne(d => d.IdTipoItemNavigation)
+                    .WithMany(p => p.TipoItemComision)
+                    .HasForeignKey(d => d.IdTipoItem)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_TipoItemComision_TipoItem_1");
+            });
+
+            modelBuilder.Entity<ParteAceptaTermino>(entity =>
+            {
+                entity.HasKey(e => e.IdParte)
+                    .HasName("IdParteAceptaTermino");
+
+                entity.Property(e => e.IdParte).ValueGeneratedNever();
+
+                entity.Property(e => e.Fecha).HasColumnType("datetime");
+
+                entity.HasOne(d => d.IdParteNavigation)
+                    .WithOne(p => p.ParteAceptaTermino)
+                    .HasForeignKey<ParteAceptaTermino>(d => d.IdParte)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_ParteAceptaTermino_Parte_1");
+            });
         }
         public async Task<int> SaveChangesAsync()
         {

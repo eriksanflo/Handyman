@@ -50,5 +50,16 @@ namespace Handyman.API.Controllers
             else
                 return BadRequest(result.HttpResponse);
         }
+
+        [HttpPost]
+        [Route("Subcategory/GetInfo")]
+        public async Task<IActionResult> GetSubcategory(GetSubcategoryInfoCommand command)
+        {
+            var result = await Mediator.Send(command);
+            if (result.Success)
+                return Ok(result.SubcategoryInfo);
+            else
+                return BadRequest(result.HttpResponse);
+        }
     }
 }

@@ -6,6 +6,7 @@ namespace Handyman.Service.Handler.ContextInterface
 {
     public interface IApplicationDbContext
     {
+        DbSet<Configuracion> Configuracion { get; set; }
         DbSet<AccesoProvider> AccesoProvider { get; set; }
         DbSet<Accesos> Accesos { get; set; }
         DbSet<AsignacionParteItem> AsignacionParteItem { get; set; }
@@ -48,6 +49,10 @@ namespace Handyman.Service.Handler.ContextInterface
         DbSet<VentaEstatus> VentaEstatus { get; set; }
         DbSet<VentaEvaluacion> VentaEvaluacion { get; set; }
         DbSet<VentaRole> VentaRole { get; set; }
+        DbSet<Cargo> Cargo { get; set; }
+        DbSet<TipoItemComision> TipoItemComision { get; set; }
+        DbSet<VentaImagen> VentaImagen { get; set; }
+        DbSet<ParteAceptaTermino> ParteAceptaTermino { get; set; }
 
         Task<int> SaveChangesAsync();
     }

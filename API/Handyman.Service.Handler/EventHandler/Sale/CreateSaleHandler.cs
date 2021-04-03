@@ -1,9 +1,11 @@
-﻿using Handyman.Domain.Models;
+﻿using Handyman.Common;
+using Handyman.Domain.Models;
 using Handyman.Service.Handler.Commands.Sale;
 using Handyman.Service.Handler.ContextInterface;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,11 +24,17 @@ namespace Handyman.Service.Handler.EventHandler.Sale
             var response = new CreateSaleResult();
             try
             {
-                var domain = Build(request);
+                var domain = await Build(request);
                 _contex.Venta.Add(domain);
                 await _contex.SaveChangesAsync();
                 domain.Folio = GenerateFolio(domain.IdVenta);
                 await _contex.SaveChangesAsync();
+
+                response.SaleAffectedInfo = new SaleAffected
+                {
+                    SaleId = domain.IdVenta,
+                    Folio = domain.Folio,
+                };
                 response.SetSuccess();
             }
             catch (Exception ex)
@@ -36,13 +44,15 @@ namespace Handyman.Service.Handler.EventHandler.Sale
             return response;
         }
 
-        private Venta Build(CreateSaleCommand request)
+        private async Task<Venta> Build(CreateSaleCommand request)
         {
             var domain = new Venta
             {
                 IdTipoVenta = request.SaleType,
                 Fecha = DateTime.Now,
                 FechaRegistro = DateTime.Now,
+                IdOrden = request.IdOrder,
+                IdTarjetaCliente = request.IdCustomerCard,
             };
 
             var index = 1;
@@ -52,24 +62,37 @@ namespace Handyman.Service.Handler.EventHandler.Sale
                 {
                     IdItem = item.ProductId,
                     IdTipoItem = item.ProductTypeId,
-                    IdItemPrecio = item.ProductPriceId,
+                    IdItemPrecio = item.ProductPriceId <= 0 ? (int?)null : item.ProductPriceId,
                     Cantidad = item.Quantity,
                     Precio = item.Price,
-                    Importe = item.Amount,
+                    Importe = decimal.Multiply(item.Quantity, item.Price),
                     FechaCompromiso = item.SupplyDate,
                     Secuencia = (short)index++,
                     Observaciones = item.Notes,
                 };
-                index++;
                 domain.VentaDetalle.Add(detail);
             }
 
-            if (request.Customer != null)
+            if (request.Images != null)
             {
+                foreach (var item in request.Images)
+                {
+                    domain.VentaImagen.Add(new VentaImagen
+                    {
+                        Nombre = item.Name,
+                        Extension = item.Extension,
+                        Imagen = item.Source,
+                    });
+                }
+            }
+
+            if (request.Customer.IdParte != Guid.Empty)
+            {
+                var customer = await GetParteRoleByType(request.Customer.IdParte, eTipoParteRole.ClientePersona);
                 domain.VentaRole.Add(new VentaRole 
                 { 
-                    IdTipoParteRole = request.Customer.CustomerPartTypeId,
-                    IdParteRole = request.Customer.CustomerId,
+                    IdTipoParteRole = customer.IdTipoParteRole,
+                    IdParteRole = customer.IdParteRole,
                     FechaInicial = DateTime.Now,
                 });
             }
@@ -88,6 +111,24 @@ namespace Handyman.Service.Handler.EventHandler.Sale
         private void ApplyAllStatus(ref VentaDetalle domain)
         {
 
+        }
+        private async Task<ParteRole> GetParteRoleByType(Guid part, eTipoParteRole tipoParteRole)
+        {
+            var matches = _contex.ParteRole.Where(x => x.IdParte == part && x.IdTipoParteRole == (int)tipoParteRole && x.FechaFinal == null);
+            if (matches.Any())
+                return await Task.FromResult(matches.FirstOrDefault());
+            else
+            {
+                var domain = new ParteRole()
+                {
+                    IdParte = part,
+                    IdTipoParteRole = (int)tipoParteRole,
+                    FechaInicial = DateTime.Now,
+                };
+                _contex.ParteRole.Add(domain);
+                await _contex.SaveChangesAsync();
+                return domain;
+            }
         }
     }
 }

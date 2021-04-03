@@ -1,4 +1,5 @@
-﻿using Handyman.Domain.Models;
+﻿using Handyman.Common;
+using Handyman.Domain.Models;
 using Handyman.Service.Handler.Commands.Entity;
 using Handyman.Service.Handler.Common.Info;
 using Handyman.Service.Handler.ContextInterface;
@@ -30,6 +31,7 @@ namespace Handyman.Service.Handler.EventHandler.Entity
                 domain.IdParte = Guid.NewGuid();
                 AttachPerson(domain, request.Person);
                 AttachAccess(domain, request.User, request.Password);
+                AttachMedioContacto(domain, request.MobilePhone);
                 _contex.Parte.Add(domain);
                 await _contex.SaveChangesAsync();
                 response.SetSuccess();
@@ -74,6 +76,20 @@ namespace Handyman.Service.Handler.EventHandler.Entity
                 Activo = true,
             });
         }
+        private void AttachMedioContacto(Parte domain, string mobile)
+        {
+            if (!string.IsNullOrEmpty(mobile))
+            {
+                domain.MedioContactoParte.Add(new MedioContactoParte
+                {
+                    IdTipoPropositoContacto = (int)eTipoPropositoContacto.Telefonico,
+                    IdPropositoContacto = (int)ePropositoContacto.Movil,
+                    Contacto = mobile,
+                    Principal = true,
+                    FechaInicial = DateTimeOffset.Now,
+                });
+            }
+        }
         private string GetCode(string name, string lastname = null, string motherLastname = null)
         {
             var characters = string.Empty;
@@ -85,9 +101,9 @@ namespace Handyman.Service.Handler.EventHandler.Entity
                     characters += name.Substring(0, 1);
             }
             if (!string.IsNullOrEmpty(lastname))
-                characters += name.Substring(0, 1);
+                characters += lastname.Substring(0, 1);
             if (!string.IsNullOrEmpty(motherLastname))
-                characters += name.Substring(0, 1);
+                characters += motherLastname.Substring(0, 1);
             characters += "HM";
             return characters.Substring(0, 2).ToUpper();
         }

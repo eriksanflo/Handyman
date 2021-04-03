@@ -61,7 +61,7 @@ namespace Handyman.API.Controllers
             else
                 return BadRequest(result.HttpResponse);
         }
-
+        
         [HttpDelete]
         [Route("Card/{id}")]
         public async Task<IActionResult> DeletePaymentMethod(int id)
@@ -70,6 +70,37 @@ namespace Handyman.API.Controllers
             var result = Mediator.Send(cmd).Result;
             if (result.Success)
                 return Ok();
+            else
+                return BadRequest(result.HttpResponse);
+        }
+
+        [HttpGet]
+        [Route("Schedule/{idParte}")]
+        public async Task<IActionResult> GetPartSchedule(string idParte)
+        {
+            var result = await Mediator.Send(new GetPartScheduleCommand(idParte));
+            return Ok(result.ListItems);
+        }
+
+        [HttpGet]
+        [Route("AcceptCondition/{idParte}")]
+        public async Task<IActionResult> GetPartAcceptedConditions(string idParte)
+        {
+            var command = new AcceptedConditionCommand(Guid.Parse(idParte));
+            var result = await Mediator.Send(command);
+            if (result.Success)
+                return Ok(result.ResultadoTerminos);
+            else
+                return BadRequest(result.HttpResponse);
+        }
+
+        [HttpPost]
+        [Route("AcceptCondition")]
+        public async Task<IActionResult> PostPartAcceptedConditions(AcceptConditionCommand command)
+        {
+            var result = await Mediator.Send(command);
+            if (result.Success)
+                return Ok(result.ResultadoTerminos);
             else
                 return BadRequest(result.HttpResponse);
         }

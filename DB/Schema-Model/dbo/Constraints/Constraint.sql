@@ -68,3 +68,15 @@ ALTER TABLE [dbo].[CuentaBancaria] ADD CONSTRAINT [fk_CuentaBancaria_Banco_1] FO
 
 ALTER TABLE [dbo].[AsignacionParteItem] ADD CONSTRAINT [fk_AsignacionParteItem_Parte_1] FOREIGN KEY ([IdParte]) REFERENCES [dbo].[Parte]([IdParte]) ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE [dbo].[AsignacionParteItem] ADD CONSTRAINT [fk_AsignacionParteItem_Item_1] FOREIGN KEY ([IdItem]) REFERENCES [dbo].[Item]([IdItem]) ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+ALTER TABLE [dbo].[Venta] ADD CONSTRAINT [fk_Venta_TarjetaCliente_1] FOREIGN KEY ([IdTarjetaCliente]) REFERENCES [dbo].[TarjetaCliente]([IdTarjetaCliente]) ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+ALTER TABLE [dbo].[Cargo] ADD CONSTRAINT [fk_Cargo_Venta_1] FOREIGN KEY ([IdVenta]) REFERENCES [dbo].[Venta]([IdVenta]) ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+ALTER TABLE [dbo].[VentaImagen] ADD CONSTRAINT [fk_VentaImagen_Venta_1] FOREIGN KEY ([IdVenta]) REFERENCES [dbo].[Venta]([IdVenta]) ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+ALTER TABLE [dbo].[TipoItemComision] ADD CONSTRAINT [fk_TipoItemComision_TipoItem_1] FOREIGN KEY ([IdTipoItem]) REFERENCES [dbo].[TipoItem]([IdTipoItem]) ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+ALTER TABLE [dbo].[ParteAceptaTermino] ADD CONSTRAINT [fk_ParteAceptaTermino_Parte_1] FOREIGN KEY ([IdParte]) REFERENCES [dbo].[Parte]([IdParte]) ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+

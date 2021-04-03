@@ -28,7 +28,7 @@ namespace Handyman.API.Controllers
                 return BadRequest(result.HttpResponse);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("Authorization")]
         public async Task<IActionResult> Authorization(AuthenticateCommand cmd)
         {

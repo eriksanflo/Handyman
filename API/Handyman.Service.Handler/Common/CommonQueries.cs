@@ -14,5 +14,6 @@ namespace Handyman.Service.Handler.Common
                 .Include(x => x.IdCodigoPostalNavigation)
                 .Single(x => x.IdDireccionPostalParte == id);
         }
+
     }
 }

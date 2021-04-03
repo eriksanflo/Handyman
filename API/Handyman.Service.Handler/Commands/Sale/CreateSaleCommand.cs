@@ -9,8 +9,11 @@ namespace Handyman.Service.Handler.Commands.Sale
     public class CreateSaleCommand : IRequest<CreateSaleResult>
     {
         public int SaleType { get; set; }
+        public int IdCustomerCard { get; set; }
+        public string IdOrder { get; set; }
         public CustomerInfo Customer { get; set; }
         public List<CreateSaleDetails> Details { get; set; }
+        public List<PartDocumentInfo> Images { get; set; }
     }
     public class CreateSaleDetails
     {

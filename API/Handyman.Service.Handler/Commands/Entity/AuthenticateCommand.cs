@@ -17,5 +17,12 @@ namespace Handyman.Service.Handler.Commands.Entity
     public class EntityToken
     {
         public string AccessToken { get; set; }
+        public string IdParte { get; set; }
+        public string Usuario { get; set; }
+        public string Codigo { get; set; }
+        public string Nombre { get; set; }
+        public string Paterno { get; set; }
+        public string Materno { get; set; }
+        public string Telefono { get; set; }
     }
 }

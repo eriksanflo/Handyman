@@ -3,9 +3,7 @@ using System;
 
 namespace Handyman.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class DefaultController : ControllerBase
+    public class DefaultController : BaseApiController
     {
 
         [HttpGet]

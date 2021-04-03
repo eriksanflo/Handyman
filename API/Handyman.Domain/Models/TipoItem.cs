@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Handyman.Domain.Models
 {
@@ -9,6 +8,7 @@ namespace Handyman.Domain.Models
         {
             Item = new HashSet<Item>();
             VentaDetalle = new HashSet<VentaDetalle>();
+            TipoItemComision = new HashSet<TipoItemComision>();
         }
 
         public int IdTipoItem { get; set; }
@@ -19,5 +19,6 @@ namespace Handyman.Domain.Models
 
         public virtual ICollection<Item> Item { get; set; }
         public virtual ICollection<VentaDetalle> VentaDetalle { get; set; }
+        public virtual ICollection<TipoItemComision> TipoItemComision { get; set; }
     }
 }

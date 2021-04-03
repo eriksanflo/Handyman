@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Handyman.Service.Handler.Commands.Sale;
-using Microsoft.AspNetCore.Http;
+﻿using Handyman.Service.Handler.Commands.Sale;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Handyman.API.Controllers
 {

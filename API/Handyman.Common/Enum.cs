@@ -13,4 +13,12 @@
         Venta = 1,
         Cotizacion = 2
     }
+    public enum eTipoPropositoContacto
+    {
+        Telefonico = 1,
+    }
+    public enum ePropositoContacto
+    {
+        Movil = 1,
+    }
 }

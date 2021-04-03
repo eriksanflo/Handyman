@@ -1,0 +1,37 @@
+use handyman
+
+/*
+	REGISTRO DE ITEMS DE ELECTRODOMÉSTICOS
+*/
+
+--SET IDENTITY_INSERT dbo.TipoItem ON
+--INSERT INTO dbo.TipoItem(IdTipoItem, Nombre, Categoria, Activo, IdTipoItemPadre)
+--VALUES (501, 'COLOCACIÓN/MANTENIMIENTO DE REFRIGERADOR', 0, 1, 5), (502, 'COLOCACIÓN/MANTENIMIENTO DE ESTUFA', 0, 1, 5), (503, 'COLOCACIÓN/MANTENIMIENTO DE CALENTADOR', 0, 1, 5)
+--SET IDENTITY_INSERT dbo.TipoItem OFF
+
+--SET IDENTITY_INSERT dbo.Item ON
+--INSERT INTO dbo.Item (IdItem, IdTipoItem, Codigo, Nombre, Activo)
+--VALUES 
+--	(5011, 501, 'REF', 'COLOCACIÓN/MANTENIMIENTO DE REFRIGERADOR', 1),
+
+--/* RETIRO DE HUMEDAD Y PINTADO */
+--	(5021, 502, 'EST', 'COLOCACIÓN/MANTENIMIENTO DE ESTUFA', 1),
+
+--/* IMPERMEABILIZACION */
+--	(5031, 503, 'CAL', 'COLOCACIÓN/MANTENIMIENTO DE CALENTADOR', 1)
+
+--SET IDENTITY_INSERT dbo.Item OFF
+
+--INSERT INTO dbo.ItemCotizacion (IdItem, IdUnidadCotizacion, FechaInicial)
+--VALUES
+--(5011, 3, '2021-01-26 22:00:00 +06:00'),
+--(5021, 3, '2021-01-26 22:00:00 +06:00'),
+--(5031, 3, '2021-01-26 22:00:00 +06:00')
+
+--INSERT INTO dbo.ItemPrecio(IdItemCotizacion, IdItem, Desde, Hasta, FechaInicial, Precio)
+--VALUES
+--	(32, 5011, 0.0, 0.0, '2021-01-26 22:00', 250.0),
+--	(33, 5021, 0.0, 0.0, '2021-01-26 22:00', 250.0),
+--	(34, 5031, 0.0, 0.0, '2021-01-26 22:00', 250.0)
+
+EXEC dbo.GetSubcategoryInfo 503, ''

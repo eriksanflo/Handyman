@@ -7,6 +7,18 @@ namespace Handyman.API.Controllers
     public class CatalogController : BaseApiController
     {
         [HttpGet]
+        [Route("Configurations")]
+        public async Task<IActionResult> FindConfigurations()
+        {
+            var cmd = new FindConfigurationsCommand();
+            var result = await Mediator.Send(cmd);
+            if (result.Success)
+                return Ok(result.Configs);
+            else
+                return BadRequest(result.HttpResponse);
+        }
+
+        [HttpGet]
         [Route("Location/{postalCode}")]
         public async Task<IActionResult> FindMyLocation(string postalCode)
         {
